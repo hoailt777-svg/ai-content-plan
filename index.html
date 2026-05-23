@@ -3,113 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI CONTENT SYSTEM LAUNCH PLAN — AICONTENT.LEHOAI.COM</title>
+    <title>DASHBOARD KẾ HOẠCH KINH DOANH — AICONTENT.LEHOAI.COM</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #0b0f19; color: #cbd5e1; padding: 40px; line-height: 1.6; }
-        .container { max-width: 850px; margin: 0 auto; background: #111827; padding: 35px; border-radius: 12px; border: 1px solid #1f2937; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h1 { color: #ffffff; border-bottom: 2px solid #38bdf8; padding-bottom: 15px; font-size: 2.2em; text-align: center; margin-bottom: 30px; }
-        h2 { color: #38bdf8; margin-top: 30px; font-size: 1.3em; border-left: 4px solid #38bdf8; padding-left: 10px; text-transform: uppercase; }
-        ul { padding-left: 20px; }
-        li { margin-bottom: 8px; }
-        .highlight { color: #38bdf8; font-weight: bold; }
-        .skip-block { background-color: #1a1625; border-left: 4px solid #6d28d9; padding: 15px; margin: 20px 0; border-radius: 6px; }
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #111827;
+            --bg-hover: #1e293b;
+            --primary: #38bdf8;
+            --accent: #f43f5e;
+            --text-main: #cbd5e1;
+            --text-light: #ffffff;
+        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-main); color: var(--text-main); margin: 0; padding: 20px; line-height: 1.6; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid var(--primary); padding-bottom: 20px; }
+        header h1 { color: var(--text-light); margin: 0; font-size: 2.2em; text-transform: uppercase; }
+        header p { margin: 5px 0 0 0; color: var(--primary); font-weight: bold; }
         
-        /* Interactive QR Payment Box */
-        .payment-demo-box { background: #1e293b; padding: 25px; border-radius: 8px; border: 1px dashed #38bdf8; text-align: center; margin: 25px 0; }
-        .cta-btn { background: #f43f5e; color: white; border: none; padding: 12px 30px; font-size: 1.1em; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .cta-btn:hover { background: #e11d48; transform: scale(1.02); }
-        .qr-container { display: none; margin-top: 25px; padding-top: 20px; border-top: 1px solid #334155; }
-        .qr-code-placeholder { display: inline-block; width: 180px; height: 180px; background: #ffffff; color: #000; font-weight: bold; padding: 10px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .price-tag { font-size: 1.8em; color: #f43f5e; font-weight: bold; margin: 10px 0; }
+        /* 9 Sections Grid */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background-color: var(--bg-card); border: 1px solid #1f2937; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; }
+        .card:hover { transform: translateY(-3px); border-color: var(--primary); background-color: var(--bg-hover); }
+        .card h3 { color: var(--text-light); margin-top: 0; border-bottom: 1px solid #1f2937; padding-bottom: 10px; font-size: 1.1em; }
+        .card p { font-size: 0.9em; color: #94a3b8; flex-grow: 1; }
+        .view-btn { background-color: var(--primary); color: #0b0f19; border: none; padding: 8px 16px; font-weight: bold; border-radius: 4px; cursor: pointer; text-align: center; transition: 0.2s; width: 100%; box-sizing: border-box; }
+        .view-btn:hover { background-color: #7dd3fc; }
+
+        /* Custom Section for Checkout & QR */
+        .checkout-box { background: #1e1b4b; border: 1px solid #4338ca; }
+        .checkout-btn { background-color: var(--accent); color: white; }
+        .checkout-btn:hover { background-color: #e11d48; }
+
+        /* Modal Popup System */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        .modal-content { background-color: var(--bg-card); border: 1px solid var(--primary); border-radius: 12px; max-width: 650px; width: 100%; padding: 30px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.6); max-height: 85vh; overflow-y: auto; }
+        .close-btn { position: absolute; top: 15px; right: 20px; color: #64748b; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-btn:hover { color: var(--accent); }
+        .modal h2 { color: var(--primary); margin-top: 0; font-size: 1.5em; border-bottom: 1px solid #1f2937; padding-bottom: 10px; }
+        .modal ul { padding-left: 20px; }
+        .modal li { margin-bottom: 10px; }
         
-        .footer { margin-top: 40px; text-align: center; font-size: 0.9em; color: #64748b; border-top: 1px solid #1f2937; padding-top: 20px; }
+        /* QR Rendering */
+        .qr-wrapper { text-align: center; margin-top: 20px; padding: 20px; background: #fff; border-radius: 8px; display: inline-block; }
+        .qr-text { color: var(--accent); font-weight: bold; font-size: 1.2em; margin-bottom: 15px; text-align: center;}
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>BẢN CHIẾN LƯỢC HỆ THỐNG AI CONTENT<br><span style="color: #38bdf8; font-size: 0.7em;">FILE BOX CONTENT LAUNCH PLAN</span></h1>
+
+<div class="wrapper">
+    <header>
+        <h1>Hệ Thống Quản Trị Tài Sản ASSP</h1>
+        <p>Hạ Tầng Triển Khai: aicontent.lehoai.com — Khóa Định Lộ Trình 2026</p>
+    </header>
+
+    <div class="grid-container">
         
-        <h2>[MÔ PHỎNG ASSET VẬN HÀNH] LUỒNG THANH TOÁN MÃ QR</h2>
-        <div class="payment-demo-box">
-            <p style="margin: 0; font-weight: bold; color: #fff;">TRANG SẢN PHẨM TRÊN AICONTENT.LEHOAI.COM</p>
-            <p style="font-size: 0.9em; color: #94a3b8;">Bấm nút dưới đây để kiểm tra cơ chế kích hoạt hiển thị mã QR thanh toán khép kín</p>
-            <div class="price-tag">299.000 VND</div>
-            <button class="cta-btn" onclick="showPaymentQR()">KÍCH HOẠT SỞ HỮU FILE BOX CONTENT</button>
-            
-            <div id="qrSection" class="qr-container">
-                <p style="color: #38bdf8; font-weight: bold; margin-bottom: 5px;">MÃ QR THANH TOÁN ĐÃ ĐƯỢC KHỞI TẠO TỰ ĐỘNG</p>
-                <p style="font-size: 0.85em; color: #cbd5e1; margin-top: 0;">Cấu trúc cú pháp chuyển khoản bảo mật: <span style="color:#fbbf24;">FILEBOX LEHOAI</span></p>
-                <div class="qr-code-placeholder">
-                    <svg viewBox="0 0 100 100" style="width:100%; height:100%;">
-                        <rect width="100" height="100" fill="white"/>
-                        <rect x="10" y="10" width="30" height="30" fill="black"/>
-                        <rect x="15" y="15" width="20" height="20" fill="white"/>
-                        <rect x="20" y="20" width="10" height="10" fill="black"/>
-                        <rect x="60" y="10" width="30" height="30" fill="black"/>
-                        <rect x="65" y="15" width="20" height="20" fill="white"/>
-                        <rect x="70" y="20" width="10" height="10" fill="black"/>
-                        <rect x="10" y="60" width="30" height="30" fill="black"/>
-                        <rect x="15" y="65" width="20" height="20" fill="white"/>
-                        <rect x="20" y="70" width="10" height="10" fill="black"/>
-                        <rect x="45" y="45" width="10" height="10" fill="black"/>
-                        <rect x="75" y="75" width="15" height="15" fill="black"/>
-                        <rect x="60" y="60" width="10" height="5" fill="black"/>
-                    </svg>
-                </div>
-                <p style="font-size: 0.85em; color: #a78bfa; margin-top: 10px;"><i>⚠️ Trạng thái logic: Khi hệ thống nhận được tín hiệu Webhook đã thanh toán thành công, khách hàng mới được điều hướng tự động sang trang Thank-you để tải file. Không cho phép truy cập tải trước khi thanh toán.</i></p>
-            </div>
+        <div class="card">
+            <h3>01 · Bối Cảnh & Chân Dung (00 & 01)</h3>
+            <p>Phân tích tổng quan thị trường, xác định bài toán sản phẩm File Box Content V1.0 giá 299.000 VND và chân dung khách hàng mục tiêu.</p>
+            <button class="view-btn" onclick="openModal('modal01')">View Asset</button>
         </div>
 
-        <h2>01. Bối cảnh Kinh doanh & Khách hàng mục tiêu (Chặng 00 & 01)</h2>
-        <ul>
-            <li><span class="highlight">Sản phẩm số:</span> File Box Content V1.0 — Hệ thống hộp tài nguyên cấu trúc kịch bản marketing ngắn, chuỗi email bám đuổi và prompt mẫu nạp thẳng vào AI Agent.</li>
-            <li><span class="highlight">Giá bán tiêu chuẩn:</span> 299.000 VND.</li>
-            <li><span class="highlight">Khách hàng lý tưởng (Avatar):</span> Anh Mạnh (Chủ SME) / Bạn Linh (Trưởng nhóm Marketing) — Nhóm bị kiệt sức, bí ý tưởng sản xuất nội dung hàng ngày.</li>
-        </ul>
-
-        <h2>02. Định vị ngôn từ & Khác biệt cốt lõi (Chặng 02 & 03)</h2>
-        <ul>
-            <li><span class="highlight">Brand Voice Guide:</span> Định vị hình tượng Chuyên gia điều hành (Operator) logic, tập trung hoàn toàn vào ứng dụng thực tiễn. Tuyệt đối không dùng từ sáo rỗng "thực chiến".</li>
-            <li><span class="highlight">Cơ chế khác biệt (Hero Mechanism):</span> Mô hình Lego Đóng Gói (Lego-Block System) bẻ nhỏ cấu trúc thành linh kiện module lắp ráp. Tuyên ngôn: <i>"Hệ thống đã build xong, việc của bạn là kích hoạt."</i></li>
-        </ul>
-
-        <h2>03. Bản thiết kế dòng tiền & Ưu đãi cấu trúc (Chặng 04 & 05 & 06)</h2>
-        <ul>
-            <li><span class="highlight">Money Model:</span> Front-End (File Box 299k) &rarr; Order Bump (50+ Prompt cấu trúc 99k) &rarr; Upsell (Bootcamp 3-Day Automation & AI Operator 4.990.000 VND).</li>
-            <li><span class="highlight">Khối ưu đãi (Offer Stack):</span> Thư viện kịch bản + 3 Quà tặng (Mindmap 11 loại phễu, 3 mẫu Landing Page HTML sẵn sàng deploy, Khóa học video 60 phút hướng dẫn Operator). Đảo ngược rủi ro hoàn tiền 100% trong 7 ngày.</li>
-            <li><span class="highlight">Mồi nhử giá trị cao (HVCO):</span> "Bản Khung Cấu Trúc 3 Bước Viết Tiêu Đề Video Ngắn Giữ Chân Khách Hàng Trong 3 Giây Đầu Tiên".</li>
-        </ul>
-
-        <h2>04. Mô hình phễu tự động hóa & Copywriting (Chặng 07 & 08 & 10)</h2>
-        <ul>
-            <li><span class="highlight">Luồng phễu:</span> Traffic &rarr; Opt-in Page (Nhận HVCO) &rarr; Thank-you Page tích hợp Tripwire Offer 299k (Hiện mã QR tại chỗ như demo phía trên) &rarr; Chuỗi Email Sequence bám đuổi tự động 5 ngày.</li>
-            <li><span class="highlight">Ad Copy & Landing Page:</span> Viết ad copy nhắm vào tư duy tối ưu hiệu suất và trang Landing Page hoàn chỉnh đồng bộ trên tên miền phụ aicontent.lehoai.com.</li>
-        </ul>
-
-        <div class="skip-block">
-            <strong style="color: #a78bfa;">[CHIẾN LƯỢC TỐI GIẢN - SKIP 09 & 12]:</strong> Để tối giản vận hành phễu giá thấp (299k), hệ thống quyết định <strong>BỎ QUA (SKIP)</strong> hoàn toàn kịch bản VSL video dài phức tạp và Telesales thủ công. Chốt đơn quét mã QR khép kín tự động 100%.
+        <div class="card">
+            <h3>02 · Giọng Văn Thương Hiệu (02)</h3>
+            <p>Thiết lập Brand Voice chuẩn mực cho một Operator: logic, thực tế. Loại bỏ hoàn toàn các từ sáo rỗng "thực chiến".</p>
+            <button class="view-btn" onclick="openModal('modal02')">View Asset</button>
         </div>
 
-        <h2>05. Hậu phương vận hành & Lộ trình 90 ngày (Chặng 11 & 13)</h2>
-        <ul>
-            <li><span class="highlight">Tháng 1:</span> Đấu nối cổng thanh toán QR tự động hóa và hạ tầng thu lead trên website aicontent.lehoai.com.</li>
-            <li><span class="highlight">Tháng 2:</span> Chạy Facebook Ads và phủ video ngắn dạng Lego kéo traffic lạnh đo lường CPA.</li>
-            <li><span class="highlight">Tháng 3:</span> Đạt điểm hòa vốn ads, thu Lead miễn phí và kích hoạt phễu Upsell lên Bootcamp.</li>
-            <li><span class="highlight">Yêu cầu hỗ trợ (ASKS):</span> Xin cố vấn từ anh Nghĩa về thuật toán phân bổ ngân sách quảng cáo và tối ưu chỉ số CPA khi kéo tệp traffic lạnh diện rộng tại Việt Nam.</li>
-        </ul>
-
-        <div class="footer">
-            Đóng gói bài bản theo đúng triết lý Ứng Dụng Thực Tiễn & Năng Lực Triển Khai.<br>
-            <strong>Hạ tầng triển khai: aicontent.lehoai.com — Năm cấu trúc: 2026</strong>
+        <div class="card">
+            <h3>03 · Cơ Chế Khác Biệt (03)</h3>
+            <p>Hệ thống linh kiện đóng gói Lego-Block System giúp bẻ nhỏ và tối ưu hóa cấu trúc nội dung nạp thẳng vào AI Agent.</p>
+            <button class="view-btn" onclick="openModal('modal03')">View Asset</button>
         </div>
+
+        <div class="card">
+            <h3>04 · Bản Thiết Kế Dòng Tiền (04)</h3>
+            <p>Mô hình Unit Economics tính toán phễu doanh thu: Front-End 299k, Order Bump 99k, và Upsell chuyên sâu Bootcamp.</p>
+            <button class="view-btn" onclick="openModal('modal04')">View Asset</button>
+        </div>
+
+        <div class="card">
+            <h3>05 · Cấu Trúc Khối Ưu Đãi (05)</h3>
+            <p>Đóng gói Offer Stack cốt lõi, hệ thống quà tặng kèm giá trị cao và cơ chế đảo ngược rủi ro hoàn tiền trong 7 ngày.</p>
+            <button class="view-btn" onclick="openModal('modal05')">View Asset</button>
+        </div>
+
+        <div class="card">
+            <h3>06 · Mồi Nhử Giá Trị Cao (06)</h3>
+            <p>Cấu trúc Lead Magnet giải quyết nỗi đau của tệp traffic lạnh ngay lập tức trong vòng 3 phút đầu tiên.</p>
+            <button class="view-btn" onclick="openModal('modal06')">View Asset</button>
+        </div>
+
+        <div class="card">
+            <h3>07 · Sơ Đồ Phễu Tự Động (07)</h3>
+            <p>Luồng chuyển đổi dữ liệu dựa trên Larger Market Formula: Ads &rarr; Opt-in Page &rarr; Hệ thống tự động hóa.</p>
+            <button class="view-btn" onclick="openModal('modal07')">View Asset</button>
+        </div>
+
+        <div class="card checkout-box">
+            <h3>08 · Trang Thanh Toán Demo (08)</h3>
+            <p>Giao diện kiểm thử Checkout tích hợp luồng hiển thị mã QR và chặn truy cập trái phép khi chưa hoàn tất dòng tiền.</p>
+            <button class="view-btn checkout-btn" onclick="openModal('modal08')">View QR Payment</button>
+        </div>
+
+        <div class="card" style="border-color: var(--accent);">
+            <h3>09 · Lộ Trình 90 Ngày & ASKS (13)</h3>
+            <p>Khóa định cột mốc 3 tháng triển khai thực tế trên hạ tầng iNET và đề xuất hỗ trợ chuyên sâu tại Demo Day.</p>
+            <button class="view-btn" onclick="openModal('modal09')">View Roadmap & ASKS</button>
+        </div>
+
     </div>
 
-    <script>
-        function showPaymentQR() {
-            var qrSection = document.getElementById("qrSection");
-            qrSection.style.display = "block";
-            qrSection.scrollIntoView({ behavior: 'smooth' });
+    <footer class="footer">
+        Bản quyền thiết kế hệ thống thuộc về aicontent.lehoai.com — Toàn quyền bảo lưu 2026.
+    </footer>
+</div>
+
+<div id="modal01" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal01')">&times;</span>
+        <h2>01 · Bối Cảnh Kinh Doanh & Chân Dung Khách Hàng Lý Tưởng</h2>
+        <ul>
+            <li><strong>Sản phẩm số lõi:</strong> File Box Content V1.0 — Hệ thống tài nguyên mẫu kịch bản marketing đóng gói sẵn.</li>
+            <li><strong>Giá bán tiêu chuẩn:</strong> 299.000 VND (Mức giá tối ưu loại bỏ rào cản suy nghĩ của khách hàng).</li>
+            <li><strong>Chân dung (Avatar):</strong> Anh Mạnh (Chủ SME) / Bạn Linh (Trưởng nhóm Content) — Gặp áp lực lớn vì bí ý tưởng sản xuất nội dung hàng ngày.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="modal02" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal02')">&times;</span>
+        <h2>02 · Giọng Văn Thương Hiệu (Brand Voice Guide)</h2>
+        <ul>
+            <li><strong>Định vị thương hiệu:</strong> Hình tượng Chuyên gia điều hành (Operator) logic, hệ thống, rõ ràng.</li>
+            <li><strong>Nguyên tắc ngôn từ:</strong> Tập trung hoàn toàn vào khả năng ứng dụng thực tiễn và hiệu suất triển khai.</li>
+            <li><strong>Từ ngữ nghiêm cấm:</strong> Tuyệt đối không sử dụng các từ ngữ sáo rỗng, mang tính buzzword thị trường như <span style="color:var(--accent);">"thực chiến"</span> để bảo vệ vị thế chuyên nghiệp.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="modal03" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal03')">&times;</span>
+        <h2>03 · Cơ Chế Khác Biệt Cốt Lõi (Hero Mechanism)</h2>
+        <ul>
+            <li><strong>Tuyên ngôn vận hành:</strong> "Hệ thống đã build xong, việc của bạn là kích hoạt."</li>
+            <li><strong>Cơ chế Lego-Block System:</strong> Bẻ gãy mọi cấu trúc viết bài phức tạp thành các module linh kiện lắp ráp linh hoạt. Định dạng dữ liệu chuẩn hóa giúp người dùng có thể nạp thẳng vào AI Agent của doanh nghiệp để viết bài đúng Brand Voice.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="modal04" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal04')">&times;</span>
+        <h2>04 · Bản Thiết Kế Dòng Tiền (Money Model)</h2>
+        <ul>
+            <li><strong>Sản phẩm đầu phễu (Front-End):</strong> File Box Content tiêu chuẩn giá 299.000 VND.</li>
+            <li><strong>Sản phẩm bán kèm (Order Bump):</strong> Bộ 50+ Prompt Cấu Trúc Nhúng Agent giá 99.000 VND.</li>
+            <li><strong>Sản phẩm giá cao (Upsell backend):</strong> Vé tham dự Bootcamp chuyên sâu 3-Day Automation & AI Operator giá 4.990.000 VND.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="modal05" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal05')">&times;</span>
+        <h2>05 · Cấu Trúc Khối Ưu Đãi (Offer Architect)</h2>
+        <ul>
+            <li><strong>Lõi ưu đãi:</strong> Thư viện 100+ cấu trúc kịch bản video ngắn + chuỗi email sequence bám đuổi tâm lý.</li>
+            <li><strong>Quà tặng kèm:</strong> Bản đồ tư duy 11 loại phễu tự động + 3 Mẫu Landing Page HTML tĩnh + Khóa học video tối ưu AI Agent dài 60 phút.</li>
+            <li><strong>Cơ chế bảo vệ khách hàng:</strong> Đảo ngược rủi ro hoàn toàn với cam kết hoàn tiền 100% trong 7 ngày nếu không sử dụng được.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="modal06" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal06')">&times;</span>
+        <h2>06 · Mồi Nhử Giá Trị Cao (HVCO Lead Magnet)</h2>
+        <ul>
+            <li><strong>Tên tài sản:</strong> Bản Khung Cấu Trúc 3 Bước Viết Tiêu Đề Video Ngắn Giữ Chân Khách Hàng Trong 3 Giây Đầu Tiên.</li>
+            <li><strong>Mục tiêu:</strong> Giải quyết triệt để lỗi phân phối nội dung của khách hàng lạnh, tạo niềm tin lập tức trong 3 phút đầu tiên sau khi nhận tài liệu.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="modal07" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal07')">&times;</span>
+        <h2>07 · Sơ Đồ Phễu Tự Động Hóa (Funnel Blueprint)</h2>
+        <ul>
+            <li><strong>Chiến lược chuyển đổi:</strong> Áp dụng công thức Larger Market Formula để thu hút và khai thác 37% nhóm thị trường tiềm năng.</li>
+            <li><strong>Luồng dữ liệu:</strong> Traffic nguồn lạnh (Ads/Video ngắn) &rarr; Opt-in Page (Thu thập thông tin tặng HVCO) &rarr; Thank-you Page tích hợp Tripwire Offer bán gói 299k (Giới hạn đếm ngược 20 phút) &rarr; Email Sequence tự động nuôi dưỡng hậu mãi.</li>
+            <li><strong>Vận hành tối giản (SKIP):</strong> Bỏ qua (SKIP) hoàn toàn kịch bản VSL dài và quy trình Telesales để tối ưu hóa nguồn lực.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="modal08" class="modal">
+    <div class="modal-content" style="text-align: center;">
+        <span class="close-btn" onclick="closeModal('modal08')">&times;</span>
+        <h2>HỆ THỐNG MÔ PHỎNG CỔNG THANH TOÁN TỰ ĐỘNG</h2>
+        <p style="color: #94a3b8; font-size: 0.9em; margin-top: 0;">Áp dụng cho trang giỏ hàng tại aicontent.lehoai.com</p>
+        
+        <div class="qr-text">SỐ TIỀN CẦN THANH TOÁN: 299.000 VND</div>
+        <p style="font-size: 0.85em; margin: 0;">Nội dung chuyển khoản tự động bảo mật: <span style="color:#fbbf24; font-weight: bold;">FILEBOX LEHOAI</span></p>
+        
+        <div class="qr-wrapper">
+            <svg viewBox="0 0 100 100" style="width:160px; height:160px; display: block; margin: 0 auto;">
+                <rect width="100" height="100" fill="white"/>
+                <rect x="5" y="5" width="25" height="25" fill="black"/>
+                <rect x="9" y="9" width="17" height="17" fill="white"/>
+                <rect x="13" y="13" width="9" height="9" fill="black"/>
+                <rect x="70" y="5" width="25" height="25" fill="black"/>
+                <rect x="74" y="9" width="17" height="17" fill="white"/>
+                <rect x="78" y="13" width="9" height="9" fill="black"/>
+                <rect x="5" y="70" width="25" height="25" fill="black"/>
+                <rect x="9" y="74" width="17" height="17" fill="white"/>
+                <rect x="13" y="78" width="9" height="9" fill="black"/>
+                <rect x="40" y="40" width="15" height="15" fill="black"/>
+                <rect x="45" y="45" width="5" height="5" fill="white"/>
+                <rect x="75" y="75" width="15" height="15" fill="black"/>
+                <rect x="50" y="70" width="10" height="5" fill="black"/>
+                <rect x="80" y="45" width="5" height="15" fill="black"/>
+            </svg>
+        </div>
+        <p style="font-size: 0.85em; color: var(--accent); margin-top: 15px; font-style: italic; text-align: left;">
+            * Cơ chế an toàn logic: Mã QR và số tiền 299.000 VND trên được khởi tạo cố định. Hệ thống chỉ kích hoạt Webhook điều hướng khách hàng về trang cảm ơn tải file SAU KHI nhận tín hiệu thanh toán thành công từ ngân hàng. Tuyệt đối không lộ link tải trước khi dòng tiền khớp đơn.
+        </p>
+    </div>
+</div>
+
+<div id="modal09" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('modal09')">&times;</span>
+        <h2>09 · Lộ Trình Triển Khai 90 Ngày & Đề Xuất Hỗ Trợ (ASKS)</h2>
+        <ul>
+            <li><strong>Tháng 1 (Validation):</strong> Cấu hình hệ thống thu thập danh bạ Lead lạnh và cổng quét mã QR tự động hóa trực tiếp trên máy chủ hosting iNET cá nhân.</li>
+            <li><strong>Tháng 2 (Scale Traffic):</strong> Khởi chạy chiến dịch quảng cáo Facebook Ads kết hợp phủ video ngắn theo cấu trúc module lắp ráp nhằm đo lường chính xác chỉ số CPA.</li>
+            <li><strong>Tháng 3 (Optimization):</strong> Đạt điểm hòa vốn quảng cáo đầu phễu, tối ưu hóa hệ thống Automation Email bám đuổi để thúc đẩy tỷ lệ chuyển đổi sản phẩm giá cao Bootcamp.</li>
+            <li><strong>YÊU CẦU HỖ TRỢ CHI TIẾT (ASKS):</strong> Xin cố vấn sâu từ Mentor về thuật toán phân bổ ngân sách quảng cáo tối ưu và chiến lược kiểm soát chỉ số CPA (Cost Per Action) hiệu quả khi kéo tệp traffic lạnh trên quy mô diện rộng tại thị trường Việt Nam.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = "flex";
+    }
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+    }
+    // Đóng popup khi click ra ngoài vùng nội dung
+    window.onclick = function(event) {
+        if (event.target.className === 'modal') {
+            event.target.style.display = "none";
         }
-    </script>
+    }
+</script>
 </body>
 </html>
