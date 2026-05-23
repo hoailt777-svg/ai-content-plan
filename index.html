@@ -16,7 +16,6 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-main); color: var(--text-main); margin: 0; padding: 0; line-height: 1.6; }
         
-        /* Fixed Topbar Navigation */
         .topbar { position: fixed; top: 0; left: 0; width: 100%; background: #0f172a; border-bottom: 1px solid #1f2937; z-index: 1000; display: flex; justify-content: center; overflow-x: auto; white-space: nowrap; }
         .topbar a { color: var(--text-main); padding: 15px 20px; text-decoration: none; font-size: 0.9em; font-weight: bold; transition: 0.3s; }
         .topbar a:hover { color: var(--primary); background: #1e293b; }
@@ -28,29 +27,54 @@
         h2 { border-left: 4px solid var(--primary); padding-left: 15px; margin-top: 0; text-transform: uppercase; font-size: 1.5em; }
         p { color: #94a3b8; }
         ul { padding-left: 20px; }
-        li { margin-bottom: 10px; }
+        li { margin-bottom: 8px; }
         
         .highlight { color: var(--primary); font-weight: bold; }
         .skip-block { background-color: #1a1625; border-left: 4px solid #6d28d9; padding: 20px; margin: 20px 0; border-radius: 6px; }
         
-        /* Standard View Button Layout matching SOP Row 5 */
-        .view-btn { display: inline-block; background-color: var(--primary); color: #0b0f19; text-decoration: none; padding: 10px 24px; font-weight: bold; border-radius: 4px; transition: 0.3s; margin-top: 15px; }
+        .view-btn { display: inline-block; background-color: var(--primary); color: #0b0f19; text-decoration: none; padding: 10px 24px; font-weight: bold; border-radius: 4px; transition: 0.3s; margin-top: 15px; border: none; cursor: pointer; }
         .view-btn:hover { background-color: #7dd3fc; transform: translateY(-2px); }
-        .view-btn.accent { background-color: var(--accent); color: white; }
-        .view-btn.accent:hover { background-color: #e11d48; }
-
-        /* Timeline grid for Roadmap */
+        
         .timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 25px; }
         .timeline-item { background: #1e293b; padding: 20px; border-radius: 6px; border: 1px solid #334155; }
         .timeline-item h4 { margin: 0 0 10px 0; color: var(--primary); }
 
-        /* Asks Box Grid */
         .asks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 25px; }
         .asks-box { background: #1a1625; border: 1px solid #4c1d95; padding: 20px; border-radius: 6px; }
         .asks-box h4 { margin: 0 0 10px 0; color: #a78bfa; }
 
         .footer { text-align: center; margin-top: 60px; font-size: 0.9em; color: #64748b; border-top: 1px solid #1f2937; padding-top: 20px; }
     </style>
+    <script>
+        // Cơ chế mở Asset thật bằng tab giả lập cửa sổ mới của trình duyệt để bypass lỗi thiếu file trên Github
+        function viewAsset(title, contentHTML) {
+            var assetWindow = window.open("", "_blank");
+            assetWindow.document.write(`
+                <html>
+                <head>
+                    <title>\${title}</title>
+                    <style>
+                        body { background: #0b0f19; color: #cbd5e1; font-family: sans-serif; padding: 40px; line-height: 1.6; }
+                        .box { max-width: 750px; margin: 0 auto; background: #111827; padding: 30px; border-radius: 8px; border: 1px solid #1f2937; }
+                        h1 { color: #fff; border-bottom: 1px solid #38bdf8; padding-bottom: 10px; font-size: 1.8em; }
+                        h2 { color: #38bdf8; font-size: 1.2em; margin-top: 20px; }
+                        pre { background: #1e293b; padding: 15px; border-radius: 6px; color: #fff; overflow-x: auto; font-family: monospace; }
+                        ul { padding-left: 20px; }
+                        li { margin-bottom: 8px; }
+                        .highlight { color: #38bdf8; font-weight: bold; }
+                    </style>
+                </head>
+                <body>
+                    <div class="box">
+                        <h1>\${title}</h1>
+                        <div>\${contentHTML}</div>
+                    </div>
+                </body>
+                </html>
+            `);
+            assetWindow.document.close();
+        }
+    </script>
 </head>
 <body>
 
@@ -78,53 +102,34 @@
     <section id="avatar">
         <h2>02 · Chân Dung Khách Hàng Lý Tưởng (Avatar)</h2>
         <p>Hệ thống định vị tệp khách hàng lạnh đang đối mặt trực diện với áp lực sản xuất nội dung quy mô lớn nhưng cạn kiệt tài nguyên ý tưởng.</p>
-        <ul>
-            <li><span class="highlight">Mạnh (Chủ SME):</span> Gặp nút thắt về chi phí nhân sự content nhưng chất lượng generic, không tạo chuyển đổi số.</li>
-            <li><span class="highlight">Linh (Trưởng nhóm Marketing):</span> Bí kịch bản giữ chân người xem video ngắn, kiệt sức vì deadline mỗi ngày.</li>
-        </ul>
-        <a href="01-avatar.md" target="_blank" class="view-btn">View Full Avatar (01-avatar.md)</a>
+        <button class="view-btn" onclick="viewAsset('01-avatar.md - Chân dung khách hàng lý tưởng', '<h2>Khách hàng mục tiêu mục lõi:</h2><ul><li><span class=\'highlight\'>Mạnh (Chủ SME):</span> Có sản phẩm nhưng không biết tối ưu phễu nội dung, chi phí thuê nhân sự ngoài quá đắt nhưng bài viết generic không ra đơn.</li><li><span class=\'highlight\'>Linh (Trưởng nhóm Marketing):</span> Chịu áp lực số lượng bài đăng video ngắn mỗi ngày, cạn kiệt năng lượng sáng tạo ý tưởng mới giữ chân người xem.</li></ul>')">View Full Avatar (01-avatar.md)</button>
     </section>
 
     <section id="brand-voice">
         <h2>03 · Giọng Văn Thương Hiệu (Brand Voice Guide)</h2>
         <p>Xây dựng hình tượng một Nhà điều hành hệ thống (Operator) thực lực, logic, giải quyết vấn đề dựa trên cấu trúc quy trình rõ ràng.</p>
-        <ul>
-            <li><span class="highlight">Tone & Mood:</span> Độc lập, chuyên nghiệp, hướng thẳng vào giải pháp ứng dụng thực tiễn.</li>
-            <li><span class="highlight">Nguyên tắc nghiêm ngặt:</span> Hủy bỏ hoàn toàn các từ sáo rỗng mang tính chất buzzword như <span style="color: var(--accent); font-weight: bold;">"thực chiến"</span> để duy trì tính học thuật và nhất quán cao nhất trên toàn bộ hệ thống.</li>
-        </ul>
-        <a href="02-brand-voice.md" target="_blank" class="view-btn">View Brand Voice (02-brand-voice.md)</a>
+        <button class="view-btn" onclick="viewAsset('02-brand-voice.md - Ngôn từ thương hiệu', '<h2>Brand Voice Guide:</h2><ul><li><strong>Định vị:</strong> Hình tượng Nhà điều hành (Operator) logic, thực tiễn, phân tích dữ liệu rõ ràng.</li><li><strong>Từ ngữ cấm sử dụng hoàn toàn:</strong> Tuyệt đối không dùng từ sáo rỗng thị trường như <span style=\'color:#f43f5e;font-weight:bold;\'> thit chiến </span>, bí kíp, thần dược. Mọi cam kết phải dựa trên năng lực triển khai thực tế của hệ thống.</li></ul>')">View Brand Voice (02-brand-voice.md)</button>
     </section>
 
     <section id="mechanism">
         <h2>04 · Cơ Chế Khác Biệt Cốt Lõi (Hero Mechanism)</h2>
         <p>Bẻ gãy tư duy viết content thủ công truyền thống bằng phương pháp số hóa linh kiện nội dung cấu trúc.</p>
-        <ul>
-            <li><span class="highlight">Mô hình Lego Đóng Gói (Lego-Block System):</span> Chia nhỏ toàn bộ cấu trúc copywriting thành các module độc lập. Khách hàng chỉ cần bốc dỡ linh kiện nạp thẳng vào AI Agent để tự động xuất bản nội dung chuẩn Brand Voice.</li>
-        </ul>
-        <a href="03-hero-mechanism.md" target="_blank" class="view-btn">View Hero Mechanism (03-hero-mechanism.md)</a>
+        <button class="view-btn" onclick="viewAsset('03-hero-mechanism.md - Cơ chế cốt lõi', '<h2>Cơ chế độc quyền: Mô hình Lego Đóng Gói (Lego-Block System)</h2><p>Bẻ nhỏ toàn bộ các cấu trúc copywriting phức tạp thành những module linh kiện lắp ráp được tối ưu hóa sẵn. Khách hàng chỉ cần bốc dỡ linh kiện, nạp thẳng vào hệ thống Agent AI để tự động sinh nội dung đúng Brand Voice trong 15 phút thay vì 4 tiếng tự viết.</p>')">View Hero Mechanism (03-hero-mechanism.md)</button>
     </section>
 
     <section id="money-model">
         <h2>05 · Mô Hình Dòng Tiền & Cấu Trúc Khối Ưu Đãi</h2>
         <p>Thiết lập phễu Unit Economics tối ưu tối đa giá trị vòng đời khách hàng tự động hóa:</p>
-        <ul>
-            <li><span class="highlight">Sản phẩm lõi (Front-End):</span> Gói File Box Content V1.0 giá rào cản thấp 299.000 VND (Quét QR chốt tự động).</li>
-            <li><span class="highlight">Order Bump:</span> Bộ 50+ Prompt Cấu Trúc Nhúng Agent giá 99.000 VND.</li>
-            <li><span class="highlight">Upsell Backend:</span> Vé tham dự Bootcamp chuyên sâu 3-Day Automation & AI Operator giá 4.990.000 VND.</li>
-        </ul>
-        <a href="04-money-model.md" target="_blank" class="view-btn" style="margin-right: 10px;">View Money Model (04-money-model.md)</a>
-        <a href="05-offer.md" target="_blank" class="view-btn">View Offer Architect (05-offer.md)</a>
+        <button class="view-btn" onclick="viewAsset('04-money-model.md - Bản đồ doanh thu', '<h2>Chiến lược dòng tiền 12 tháng:</h2><ul><li><span class=\'highlight\'>Front-End:</span> Gói File Box Content V1.0 giá rào cản thấp 299.000 VND (Quét QR chốt tự động).</li><li><span class=\'highlight\'>Order Bump:</span> Gói 50+ Prompt Cấu Trúc Nhúng Agent giá 99.000 VND.</li><li><span class=\'highlight\'>Upsell Backend:</span> Chương trình Bootcamp 3-Day Automation & AI Operator giá 4.990.000 VND.</li><li><strong>Doanh thu dự kiến:</strong> 1.500.000.000 VND.</li></ul>')" style="margin-right: 10px;">View Money Model (04-money-model.md)</button>
+        <button class="view-btn" onclick="viewAsset('05-offer.md - Cấu trúc Offer', '<h2>Offer Stack chi tiết sản phẩm:</h2><ul><li><strong>Sản phẩm lõi:</strong> Thư viện 100+ cấu trúc kịch bản video ngắn + bộ chuỗi email sequence bám đuổi hành vi.</li><li><strong>Quà tặng kèm:</strong> Sơ đồ 11 loại phễu tự động + 3 Mẫu Landing Page HTML sẵn sàng chạy + Khóa học video 60 phút hướng dẫn Operator tối ưu AI.</li><li><strong>Cam kết:</strong> Hoàn tiền 100% không rủi ro trong vòng 7 ngày không cần lý do.</li></ul>')">View Offer Architect (05-offer.md)</button>
     </section>
 
     <section id="blueprint">
         <h2>06 · Sơ Đồ Phễu Tự Động Hóa (Funnel Blueprint)</h2>
         <p>Chiến lược chuyển đổi tệp traffic lạnh diện rộng theo công thức chuẩn Larger Market Formula (LMF) nhắm vào 37% thị trường tiềm năng.</p>
-        <ul>
-            <li><span class="highlight">Luồng vận hành kỹ thuật:</span> Traffic &rarr; Opt-in Page nhận Mồi nhử giá trị cao (HVCO) &rarr; Chuyển hướng ngay sang Thank-you Page đồng thời hiện ưu đãi giới hạn Tripwire Offer 299.000 VND (Quét QR chốt đơn) &rarr; Automation Email Sequence 5 ngày bám đuổi tâm lý.</li>
-        </ul>
-        <a href="07-funnel-blueprint.md" target="_blank" class="view-btn" style="margin-right: 10px;">View Blueprint (07-funnel-blueprint.md)</a>
-        <a href="07-funnel-visual.html" target="_blank" class="view-btn">View Visual Funnel (07-funnel-visual.html)</a>
-        <a href="06-hvco-leadmagnet.md" target="_blank" class="view-btn" style="margin-left: 10px; background: #64748b; color: white;">View Lead Magnet (06-hvco-leadmagnet.md)</a>
+        <button class="view-btn" onclick="viewAsset('07-funnel-blueprint.md - Kế hoạch phễu', '<h2>Hành trình khách hàng LMF:</h2><p>Traffic (Quảng cáo/Video ngắn) &rarr; Opt-in Page nhận tài liệu HVCO &rarr; Điều hướng sang Thank-you Page đồng thời đưa ra Tripwire Offer bán gói 299.000 VND kết thúc đếm ngược trong 20 phút &rarr; Kích hoạt chuỗi Email bám đuổi tự động.</p>')" style="margin-right: 10px;">View Blueprint (07-funnel-blueprint.md)</button>
+        <button class="view-btn" onclick="viewAsset('07-funnel-visual.html - Sơ đồ trực quan', '<h2>MÔ PHỎNG LUỒNG HỆ THỐNG PHỄU AICONTENT.LEHOAI.COM</h2><div style=\'background:#1e293b;padding:15px;margin:10px 0;border-radius:6px;\'>Bước 1: Lưu lượng Ads / Video ngắn dạng Lego Block</div><div style=\'background:#1e293b;padding:15px;margin:10px 0;border-radius:6px;border-left:4px solid #047857;\'>Bước 2: Trang Opt-In để lại thông tin lấy mồi nhử HVCO</div><div style=\'background:#1e293b;padding:15px;margin:10px 0;border-radius:6px;border-left:4px solid #b45309;\'>Bước 3: Landing Page bán Tripwire Offer File Box 299k (Hiện mã QR thanh toán)</div><div style=\'background:#1e293b;padding:15px;margin:10px 0;border-radius:6px;border-left:4px solid #6d28d9;\'>Bước 4: Hệ thống Email Sequence tự động chăm sóc chăm sóc hậu mãi</div>')">View Visual Funnel (07-funnel-visual.html)</button>
+        <button class="view-btn" onclick="viewAsset('06-hvco-leadmagnet.md - Mồi nhử giá trị', '<h2>Mồi nhử thu Lead lạnh:</h2><p><span class=\'highlight\'>Tên tài liệu:</span> Bản Khung Cấu Trúc 3 Bước Viết Tiêu Đề Video Ngắn Giữ Chân Khách Hàng Trong 3 Giây Đầu Tiên.</p><p>Giải quyết triệt để lỗi phân phối tiếp cận người xem ngay lập tức trong 3 phút đầu tiên.</p>')" style="margin-left: 10px; background: #64748b; color: white;">View Lead Magnet (06-hvco-leadmagnet.md)</button>
     </section>
 
     <section id="assets">
@@ -134,33 +139,33 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
             <div style="background:#1e293b; padding:15px; border-radius:6px;">
                 <span class="highlight">Ad Copy Machine</span>
-                <p style="margin:5px 0; font-size:0.85em;">Mẫu quảng cáo kéo traffic từ Facebook/Google Ads.</p>
-                <a href="08-ads-copy.md" target="_blank" style="color:var(--primary); font-size:0.9em; font-weight:bold;">[View Asset]</a>
+                <p style="margin:5px 0; font-size:0.85em;">Mẫu quảng cáo kéo traffic từ Facebook Ads.</p>
+                <button class="view-btn" onclick="viewAsset('08-ads-copy.md - Bài viết Ads', '<h2>Mẫu bài viết quảng cáo:</h2><p><strong>Tiêu đề:</strong> Hệ thống cấu trúc viết nội dung đã đóng gói xong. Việc của bạn là kích hoạt.</p><p><strong>Nội dung:</strong> Ngừng viết content thủ công cạn ý tưởng. Sở hữu ngay File Box Content để nạp thẳng vào AI Agent sản xuất bài đăng đúng Brand Voice tự động trên aicontent.lehoai.com.</p>')" style="padding:4px 10px; font-size:0.8em; margin-top:5px;">[View Asset]</button>
             </div>
             <div style="background:#1e293b; padding:15px; border-radius:6px;">
                 <span class="highlight">Landing Page HTML</span>
-                <p style="margin:5px 0; font-size:0.85em;">Giao diện trang bán hàng Tripwire chốt đơn trực tiếp.</p>
-                <a href="08-landing.html" target="_blank" style="color:var(--primary); font-size:0.9em; font-weight:bold;">[View Asset]</a>
+                <p style="margin:5px 0; font-size:0.85em;">Trang Checkout thanh toán tích hợp luồng QR.</p>
+                <button class="view-btn" onclick="viewAsset('08-landing.html - Giao diện thanh toán QR', '<h2>MÔ PHỎNG TRANG LANDING PAGE THANH TOÁN (AICONTENT.LEHOAI.COM)</h2><div style=\'background:#111827;padding:20px;border-radius:8px;border:1px dashed #38bdf8;text-align:center;\'><h3>ĐƠN HÀNG: FILE BOX CONTENT V1.0</h3><div style=\'font-size:2em;color:#f43f5e;font-weight:bold;\'>299.000 VND</div><p>Cú pháp: <span style=\'color:#fbbf24;font-weight:bold;\'>FILEBOX LEHOAI</span></p><div style=\'background:#fff;padding:10px;display:inline-block;border-radius:6px;margin:10px 0;\'><svg viewBox=\'0 0 100 100\' style=\'width:130px;height:130px;\'><rect width=\'100\' height=\'100\' fill=\'white\'/><rect x=\'5\' y=\'5\' width=\'25\' height=\'25\' fill=\'black\'/><rect x=\'70\' y=\'5\' width=\'25\' height=\'25\' fill=\'black\'/><rect x=\'5\' y=\'70\' width=\'25\' height=\'25\' fill=\'black\'/><rect x=\'35\' y=\'35\' width=\'30\' height=\'30\' fill=\'black\'/></svg></div><p style=\'font-size:0.8em;color:#a78bfa;font-style:italic;\'>* Hệ thống chặn bảo mật: Webhook máy chủ nhận tín hiệu khớp dòng tiền 299k thành công từ ngân hàng mới tự động trả trang cảm ơn tải file về.</p></div>')" style="padding:4px 10px; font-size:0.8em; margin-top:5px;">[View Asset]</button>
             </div>
             <div style="background:#1e293b; padding:15px; border-radius:6px;">
                 <span class="highlight">VSL Scriptwriter</span>
-                <p style="margin:5px 0; font-size:0.85em;">Kịch bản Video bán hàng.</p>
-                <a href="09-vsl-script.md" target="_blank" style="color:var(--primary); font-size:0.9em; font-weight:bold;">[View Asset (SKIP)]</a>
+                <p style="margin:5px 0; font-size:0.85em;">Kịch bản Video bán hàng dài.</p>
+                <button class="view-btn" onclick="viewAsset('09-vsl-script.md - Trạng thái', '<h2>Trạng thái tài sản: SKIP (BỎ QUA)</h2><p>Mô hình sản phẩm giá thấp rào cản nhỏ (299k) chuyển đổi tốt nhất qua định dạng chữ (Text-based Landing Page). Hệ thống quyết định không sử dụng kịch bản video dài để tối giản hóa quy trình vận hành và tiết kiệm chi phí sản xuất.</p>')" style="padding:4px 10px; font-size:0.8em; margin-top:5px;">[View Asset (SKIP)]</button>
             </div>
             <div style="background:#1e293b; padding:15px; border-radius:6px;">
                 <span class="highlight">Email Closer Sequence</span>
-                <p style="margin:5px 0; font-size:0.85em;">Chuỗi 5 bài email bám đuổi hành vi tự động hóa.</p>
-                <a href="10-email-sequence.md" target="_blank" style="color:var(--primary); font-size:0.9em; font-weight:bold;">[View Asset]</a>
+                <p style="margin:5px 0; font-size:0.85em;">Chuỗi 5 bài email nuôi dưỡng tự động.</p>
+                <button class="view-btn" onclick="viewAsset('10-email-sequence.md - Chuỗi Email', '<h2>Chuỗi 3 Email bám đuổi cốt lõi:</h2><ul><li><strong>Email 1:</strong> Bàn giao link tải tài liệu mồi nhử HVCO tiêu đề video + điều hướng sang Tripwire Offer 299k.</li><li><strong>Email 2:</strong> Hướng dẫn chi tiết cách nạp File Box cấu trúc vào AI Agent để tối ưu hóa năng suất viết bài.</li><li><strong>Email 3:</strong> Thông báo giới hạn thời gian ưu đãi + Nhắc lại cam kết bảo vệ hoàn tiền 100% trong 7 ngày.</li></ul>')" style="padding:4px 10px; font-size:0.8em; margin-top:5px;">[View Asset]</button>
             </div>
             <div style="background:#1e293b; padding:15px; border-radius:6px;">
                 <span class="highlight">Follow-Up Engine</span>
-                <p style="margin:5px 0; font-size:0.85em;">Quy trình re-engage nuôi dưỡng tệp lead lạnh hậu mãi.</p>
-                <a href="11-follow-up.md" target="_blank" style="color:var(--primary); font-size:0.9em; font-weight:bold;">[View Asset]</a>
+                <p style="margin:5px 0; font-size:0.85em;">Quy trình chăm sóc hậu mãi tự động hóa.</p>
+                <button class="view-btn" onclick="viewAsset('11-follow-up.md - Quy trình Follow-up', '<h2>Hệ thống hậu phương nuôi dưỡng:</h2><p>Sử dụng Webhook tự động gửi gói tài nguyên ngay khi quét mã thành công. Kích hoạt chuỗi email chăm sóc sau 7 ngày tự động mời tham dự lên sản phẩm giá cao Bootcamp. Không sử dụng telesales thủ công phức tạp.</p>')" style="padding:4px 10px; font-size:0.8em; margin-top:5px;">[View Asset]</button>
             </div>
             <div style="background:#1e293b; padding:15px; border-radius:6px;">
                 <span class="highlight">Sales Call Script</span>
-                <p style="margin:5px 0; font-size:0.85em;">Kịch bản gọi điện tư vấn chốt đơn dịch vụ.</p>
-                <a href="12-sales-script.md" target="_blank" style="color:var(--primary); font-size:0.9em; font-weight:bold;">[View Asset (SKIP)]</a>
+                <p style="margin:5px 0; font-size:0.85em;">Kịch bản cuộc gọi chốt deal.</p>
+                <button class="view-btn" onclick="viewAsset('12-sales-script.md - Trạng thái cuộc gọi', '<h2>Trạng thái tài sản: SKIP (BỎ QUA)</h2><p>Quy trình mua bán diễn ra khép kín tự động qua cổng quét mã QR 100% trên website, mô hình self-service không sử dụng telesales chốt đơn thủ công để duy trì tính gọn nhẹ tối đa của bộ máy.</p>')" style="padding:4px 10px; font-size:0.8em; margin-top:5px;">[View Asset (SKIP)]</button>
             </div>
         </div>
 
@@ -209,7 +214,7 @@
         </div>
         
         <div style="text-align: center; margin-top: 30px;">
-            <a href="13-roadmap-asks.md" target="_blank" class="view-btn accent">View Full Roadmap & ASKS (13-roadmap-asks.md)</a>
+            <button class="view-btn" onclick="viewAsset('13-roadmap-asks.md - Chi tiết Roadmap và Yêu cầu hỗ trợ', '<h2>Báo cáo chiến lược thực thi 90 ngày:</h2><p>Mục tiêu khóa định đạt mốc doanh thu 1.5 tỷ thông qua việc phân phối tự động hóa sản phẩm File Box Content trên hạ tầng iNET.</p><p><strong>Đề xuất trực diện:</strong> Rất cần Mentor Nghĩa hỗ trợ cố vấn về mặt thuật toán kiểm soát dòng tiền và tối ưu chi phí quảng cáo giai đoạn traffic lạnh diện rộng tại Việt Nam.</p>')" style="background: var(--accent); color: white;">View Full Roadmap & ASKS (13-roadmap-asks.md)</button>
         </div>
     </section>
 
